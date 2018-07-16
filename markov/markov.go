@@ -104,24 +104,7 @@ func Generate(dict Dictionary, maxLength int, startWord string) string {
 	return sentence
 }
 
-// adjustFactors: function(dict, maxLength = 2, f = fitnessFunc) {
-// 	var extract = this.generate(dict, maxLength).split(' ');
-
-// 	var pairs = [];
-// 	for (var i = 0; i < extract.length; i++) {
-// 		if (typeof extract[i + 1] == 'undefined') {
-// 			continue;
-// 		}
-// 		pairs[i] = [extract[i], extract[i + 1]];
-// 	}
-
-// 	for (var p in pairs) {
-// 		var fact = (f(dict, pairs[p]) - 0.5) * 2;
-
-// 		dict = mergeDict(this.train(pairs[p][0] + " " + pairs[p][1], fact), dict);
-// 	}
-// 	return dict;
-// },
+// AdjustFactors takes a dictionary and applies the fitness func on the dictionary
 func AdjustFactors(dict Dictionary, maxLength int, f FitnessFunc) Dictionary {
 	extract := strings.Fields(Generate(dict, maxLength, ""))
 
@@ -143,18 +126,6 @@ func AdjustFactors(dict Dictionary, maxLength int, f FitnessFunc) Dictionary {
 	return dict
 }
 
-// bulkAdjustFactors: function(dict, iterations = 1, f = [ undefined ]) {
-// 	if (typeof f == 'undefined' || typeof f[0] == 'undefined') {
-// 		return dict;
-// 	}
-// 	for (var i = 0; i < iterations; i++) {
-// 		for (var j = 0; j < f.length; j++) {
-// 			dict = this.adjustFactors(dict, 10, f[j]);
-// 		}
-// 	}
-
-// 	return dict;
-// }
 // BulkAdjustFactors takes a dictionary and runs the number of specified iterations applying the fitness function
 func BulkAdjustFactors(dict Dictionary, iterations int, f []FitnessFunc) Dictionary {
 	if len(f) < 1 {
@@ -173,15 +144,6 @@ func BulkAdjustFactors(dict Dictionary, iterations int, f []FitnessFunc) Diction
 	return dict
 }
 
-// function fitnessFunc(dict, pair) {
-//     if (typeof pair[1] == 'undefined') {
-//         return -1;
-//     }
-//     if (typeof dict[pair[0]] == 'undefined') {
-//         return -1;
-//     }
-//     return dict[pair[0]][pair[1]];
-// }
 // FitnessFunction apply fitness to dictionary
 func FitnessFunction(dict Dictionary, pair []string) int {
 	if pair[1] == "" {
@@ -192,24 +154,6 @@ func FitnessFunction(dict Dictionary, pair []string) int {
 	}
 	return dict[pair[0]][pair[1]]
 }
-
-// function mergeDict(dict1, dict2) {
-//     var dict3 = dict1;
-//     for (var val in dict2) {
-//         if (typeof dict3[val] == 'undefined') {
-//             dict3[val] = dict2[val];
-//         } else {
-//             for (var sval in dict2[val]) {
-//                 if (typeof dict3[val][sval] == 'undefined') {
-//                     dict3[val][sval] = dict2[val][sval];
-//                 } else {
-//                     dict3[val][sval] = dict3[val][sval] + dict2[val][sval];
-//                 }
-//             }
-//         }
-//     }
-//     return dict3;
-// }
 
 // mergeDict, given two dictionaries merges them into one
 func mergeDict(dict1, dict2 Dictionary) Dictionary {
@@ -271,15 +215,3 @@ func cleanUpStrings(words []string) []string {
 	}
 	return words
 }
-
-// Version with reflection (doesn't work just yet, would be more readable)
-// // pickRandom takes a dictionary and selects a random key
-// func pickRandom(dict map[string]interface{}) string { // see https://golang.org/pkg/reflect/
-// 	keys := make([]string, len(dict))
-// 	i := 0
-// 	for k := range dict {
-// 		keys[i] = k
-// 		i++
-// 	}
-// 	return keys[rand.Intn(len(keys))]
-// }
