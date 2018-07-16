@@ -5,7 +5,7 @@ library for using Markov Chain in Go
 Create a dictionary:
 ```
 dict := markov.TrainFromFolder("training", 10000000)
-
+```
 
 Adjust factors on the dictionary via builtin fitness function or roll your own:
 ```
