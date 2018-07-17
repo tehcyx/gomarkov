@@ -83,7 +83,7 @@ func Generate(dict Dictionary, maxLength int, startWord string) string {
 		word = startWord
 	}
 
-	sentence := word
+	sentence := strings.Title(word)
 	i := 0
 	for maxLength == 0 || i < maxLength-1 {
 		i++
@@ -204,7 +204,7 @@ func pickRandom(keys []string) string {
 func cleanUpStrings(words []string) []string {
 	for val := range words {
 		// remove all non-alphanumeric characters from input
-		reg, err := regexp.Compile("[^a-zA-Z0-9]+")
+		reg, err := regexp.Compile("[^\\s\\w]")
 		if err != nil {
 			log.Fatal(err)
 		}
